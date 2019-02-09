@@ -1,0 +1,25 @@
+version: 0.0.1
+
+env:
+  variables:
+    IMAGE_REPO_NAME: "scyellleader/test-codepipeline"
+    IMAGE_TAG: :v0.0.1
+  parameter-store:
+    DOCKER_LOGIN_PASSWD: "/Keys/DockerHub/ruben"
+phases:
+  pre_build:
+    commands:
+      - echo webhook trigger $CODEBUILD_WEBHOOK_TRIGGER
+      - echo Logging in to Docker Hub...
+      - docker login -u scyellleader -p $DOCKER_LOGIN_PASSWD
+  build:
+    commands:
+      - echo "Building Docker image $IMAGE_REPO_NAME:$IMAGE_TAG"
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+  post_build:
+    commands:
+      - |
+        if [ $IMAGE_TAG != "noop" ]; then
+          echo "Pushing Docker image $IMAGE_REPO_NAME:$IMAGE_TAG"
+          docker push $IMAGE_REPO_NAME:$IMAGE_TAG
+        fi
