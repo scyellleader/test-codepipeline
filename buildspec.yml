@@ -2,7 +2,7 @@ version: 0.1
 
 env:
   variables:
-    IMAGE_REPO_NAME: "scyellleader/test-codepipeline"
+    IMAGE_REPO_NAME: "scyellleader/test"
     IMAGE_TAG: :v0.1
   parameter-store:
     DOCKER_LOGIN_PASSWD: "/Keys/DockerHub/ruben"
